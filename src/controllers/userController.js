@@ -7,9 +7,21 @@ const createUser = async function (req, res) {
   //You can name the req, res objects anything.
   //but the first parameter is always the request 
   //the second parameter is always the response
+  try {
+    let data = req.body
+    console.log(data)
+    if ( Object.keys(data).length != 0) {
   let data = req.body;
   let savedData = await userModel.create(data);
-  res.send({ data: savedData });
+  res.status(201).send({ msg: savedData })
+}
+else res.status(400).send({ msg: "BAD REQUEST"})
+}
+catch (err) {
+console.log("This is the error :", err.message)
+res.status(500).send({ msg: "Error", error: err.message })
+}
+
 };
 
 // - Write a ***POST api /login** to login a user that takes user details 
@@ -18,12 +30,13 @@ const createUser = async function (req, res) {
 // On successful login, generate a JWT token and return it in response body. 
 
 const loginUser = async function (req, res) {
+  try{
   let userName = req.body.emailId;
   let userPassword = req.body.password;
-
+  
   let user = await userModel.findOne({ emailId: userName, password: userPassword });
   if (!user)
-    return res.send({
+    return res.status(403).send({
       status: false,
       msg: "username or the password is not corerct",
     });
@@ -43,8 +56,14 @@ const loginUser = async function (req, res) {
     },
     "functionup-radon"
   );
+  
   res.setHeader("x-auth-token", token);
-  res.send({ status: true, token: token });
+  res.status(201).send({ status: true, token: token });
+    }
+    catch (err) {
+      console.log("This is the error :", err.message)
+      res.status(500).send({ msg: "Error", error: err.message })
+      }
 };
 
 //- Write a **GET api /users/:userId** to fetch user details.
@@ -54,13 +73,17 @@ const loginUser = async function (req, res) {
 //If present, check that the token is valid.
 
 const getUserData = async function (req, res) {
-  
+  try{
   let userId = req.params.userId;
   let userDetails = await userModel.findById(userId);
   if (!userDetails)
-    return res.send({ status: false, msg: "No such user exists" });
+    return res.status(404).send({ status: false, msg: "No such user exists" });
 
-  res.send({ status: true, data: userDetails });
+  res.status(200).send({ status: true, data: userDetails });
+  }catch (err) {
+    console.log("This is the error :", err.message)
+    res.status(500).send({ msg: "Error", error: err.message })
+    }
 };
 
 //- Write a **PUT api /users/:userId** to update user details.
@@ -68,15 +91,20 @@ const getUserData = async function (req, res) {
 // Check that request must contain **x-auth-token** header. If absent, return a suitable error.
 
 const updateUser = async function (req, res) {
+  try{
     let userId = req.params.userId;
     let user = await userModel.findById(userId);
     if (!user) {
-      return res.send({ status: false, msg: "No such user exists" });
+      return res.status(404).send({ status: false, msg: "No such user exists" });
     }
   
     let userData = req.body;
     let updatedUser = await userModel.findOneAndUpdate({ _id: userId }, userData);
-    res.send({ status: true, data: updatedUser });
+    res.status(200).send({ status: true, data: updatedUser });
+   } catch (err) {
+      console.log("This is the error :", err.message)
+      res.status(500).send({ msg: "Error", error: err.message })
+      }  
   };
 
   //- Write a **DELETE api /users/:userId** that takes the userId in the path params and
@@ -84,14 +112,18 @@ const updateUser = async function (req, res) {
   // Check that request must contain **x-auth-token** header. If absent, return a suitable error.
   
   const deleteUser = async function (req, res) {
+    try{
     let userId = req.params.userId;
     let user = await userModel.findById(userId);
     if (!user) {
-      return res.send({ status: false, msg: "No such user exists" });
+      return res.status(404).send({ status: false, msg: "No such user exists" });
     }
     let deletedUser = await userModel.findOneAndUpdate({ _id: userId }, {$set:{isDeleted:true}},{new:true});
-    res.send({ status: true, data: deletedUser });
-  
+    res.status(201).send({ status: true, data: deletedUser });
+  }catch (err) {
+    console.log("This is the error :", err.message)
+    res.status(500).send({ msg: "Error", error: err.message })
+    }
   };   
 
 module.exports.createUser = createUser;
