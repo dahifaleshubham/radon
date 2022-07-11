@@ -88,28 +88,33 @@ const updatedReviewById = async function (req, res) {
     }
 };
 
-const deleteReview=  async function(req,res){
+const deleteReview = async function (req, res) {
+    
 
-    try{
-const bookId= req.params.bookId
-const reviewId= req.params.reviweId
+    try {
+        let bookId = req.params.bookId
+        let reviewId = req.params.reviewId;
+        bookId=bookId.trim()
+        reviewId=reviewId.trim()
+        //bookId validation
+        if (!bookId) return res.status(400).send({ status: false, message: "Please give book id" });
+        if (!mongoose.isValidObjectId(bookId)) return res.status(400).send({ status: false, message: "Book Id is Invalid !!!!" })
 
-if (!mongoose.isValidObjectId(bookId))  return res.status(400).send({ status: false, msg: "invalid bookid" }) 
-if (!mongoose.isValidObjectId(reviewId)) return res.status(400).send({ status: false, msg: "invalid reviewId" }) 
+        //bookId exist in our database
+        const findBook = await bookModel.findOne({ _id: bookId, isDeleted: false }); //check id exist in book model
+        if (!findBook) return res.status(404).send({ status: false, message: "BookId dont exist" });
 
-const checkBook= await bookModel.findById(bookId)
-if(!checkBook) return res.status(404).send({status: false, msg: " book not present"})
+        //review-
+        if (!mongoose.isValidObjectId(reviewId)) return res.status(400).send({ status: false, message: "Review Id is Invalid !!!!" })
 
-const checkReview= await reviewModel.findById(reviewId)
-if(!checkReview)return res.status(404).send({status: false, msg : "no review exists"})
+        const findReview = await reviewModel.findOne({ _id: reviewId, bookId: bookId, isDeleted: false, }); //check id exist in review model
+        if (!findReview) return res.status(400).send({ status: false, message:"already deleted"});
 
-if (checkReview.isDeleted=== true)return res.status(400).send({ status:false, msg:"already deleted"})
+        const updateReview = await reviewModel.findByIdAndUpdate({ _id: reviewId, bookId: bookId},{isDeleted:true},{ new: true });
+        return res.status(200).send({ status: true, message: "Successfully Deleted", data: updateReview, });
 
-const deleteBook= await reviewModel.findOneAndUpdate({ _id: bookId }, { $set: { isDeleted: true, deletedAt: Date.now() } }, { new: true })
- 
-res.status(200).send({ status:true, msg:"deleted successfully",data:deleteBook})
-    }catch(err){
-        res.status(500).send({ status:false,error: err.message })
+    } catch (err) {
+        return res.status(500).send({ status: false, message: err.message });
     }
-}
+};
 module.exports={createReview,updatedReviewById,deleteReview}

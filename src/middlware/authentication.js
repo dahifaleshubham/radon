@@ -54,6 +54,7 @@ const authentication = function(req, res, next) {
   let authoriseBook= async function(req,res,next){
     try{
         let userId= req.body.userId
+        userId=userId.trim()
         
         if(!mongoose.isValidObjectId(userId)){ return res.status(400).send({status:false, msg: "invalid author id"})     }
         let data = await userModel.findById({_id:userId})

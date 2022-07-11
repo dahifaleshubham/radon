@@ -73,8 +73,8 @@ const getBookById = async function (req, res) {
 
          if (!checkbook) return res.status(404).send({ status: false, message: "No book found" })
       //  const {title,excerpt,userId,category,subcategory,isDeleted,reviews,releasedAt,createdAt,updatedAt} =checkbook
-        const reviewData = await reviewModel.find({bookId:bookId})
-        const countReview = await reviewModel.find({bookId:bookId}).count()
+        const reviewData = await reviewModel.find({bookId:bookId,isDeleted:false})
+        const countReview = await reviewModel.find({bookId:bookId,isDeleted:false}).count()
 
         let finalResult = {
             title: checkbook.title, excerpt: checkbook.excerpt, userId: checkbook.userId, category: checkbook.category, subcategory: checkbook.subcategory,
