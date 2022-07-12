@@ -20,6 +20,7 @@ const createUser = async function (req, res) {
 
 const loginUser = async function (req, res) {
   try {
+    res.setHeader('Access-Control-Allow-Origin', '*')
     let userName = req.body.email;
     let password = req.body.password;
    userName=userName.trim()

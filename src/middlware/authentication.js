@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 
 const authentication = function (req, res, next) {
   try {
+    res.setHeader('Access-Control-Allow-Origin', '*')
     let token = req.headers["x-api-key" || "X-Api-Key"]
     if (!token)
       return res.status(400).send({ status: false, msg: "token must be present" })
@@ -29,6 +30,7 @@ const authentication = function (req, res, next) {
 
 let authoriseParams = async function (req, res, next) {
   try {
+    res.setHeader('Access-Control-Allow-Origin', '*')
     let bookId = req.params.bookId
     bookId=bookId.trim()
     if (!bookId) { return res.status(400).send({ status: false, message: "BookId is require" }) }
@@ -53,6 +55,7 @@ let authoriseParams = async function (req, res, next) {
 
 let authoriseBook = async function (req, res, next) {
   try {
+    res.setHeader('Access-Control-Allow-Origin', '*')
     let userId = req.body.userId
     userId = userId.trim()
 

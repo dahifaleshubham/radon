@@ -61,6 +61,7 @@ const updatedReviewById = async function (req, res) {
 
 
     try {
+        res.setHeader('Access-Control-Allow-Origin', '*')
         let bookId = req.params.bookId
         let reviewId = req.params.reviewId;
         bookId = bookId.trim()
@@ -99,6 +100,7 @@ const deleteReview = async function (req, res) {
 
 
     try {
+        res.setHeader('Access-Control-Allow-Origin', '*')
         let bookId = req.params.bookId
         let reviewId = req.params.reviewId;
         bookId = bookId.trim()

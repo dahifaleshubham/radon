@@ -34,6 +34,7 @@ let isValidObjectId = function (ObjectId) {
 }
 const getBooks = async function (req, res) {
     try {
+        res.setHeader('Access-Control-Allow-Origin', '*')
         const queryData = req.query
         let obj = { isDeleted: false }
         if (Object.keys(queryData).length !== 0) {
@@ -63,6 +64,7 @@ const getBooks = async function (req, res) {
 const getBookById = async function (req, res) {
 
     try {
+        res.setHeader('Access-Control-Allow-Origin', '*')
          let bookId = req.params.bookId
          bookId=bookId.trim()
 
@@ -94,6 +96,7 @@ const getBookById = async function (req, res) {
 
 const updateBook = async (req, res) => {
     try {
+        res.setHeader('Access-Control-Allow-Origin', '*')
         let Id = req.params.bookId
         Id=Id.trim()
 
@@ -146,6 +149,7 @@ const updateBook = async (req, res) => {
 // ==========================================[deleteBook]===============================================================
 const deleteBook = async function (req, res) {
     try {
+        res.setHeader('Access-Control-Allow-Origin', '*')
         let bookId = req.params.bookId
         
         bookId=bookId.trim()

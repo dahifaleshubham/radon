@@ -33,6 +33,7 @@ function x(data) {
 
 const validUserModel = async function (req, res, next) {
     try {
+        res.setHeader('Access-Control-Allow-Origin', '*')
         let data = req.body
 
         let check = data.title
@@ -92,6 +93,7 @@ const validUserModel = async function (req, res, next) {
 
 let validBookModel = async function (req, res, next) {
     try {
+        res.setHeader('Access-Control-Allow-Origin', '*')
         let data = req.body
 
         let title = data.title
