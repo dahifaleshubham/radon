@@ -145,9 +145,10 @@ const updateBook = async (req, res) => {
 const deleteBook = async function (req, res) {
     try {
         let bookId = req.params.bookId
-       
+        
+        bookId=bookId.trim()
 
-        if (!mongoose.isValidObjectId(bookId)) { return res.status(400).send({ status: false, msg: "invalid user id,Please Enter Valid userId" }) }
+        if (!mongoose.isValidObjectId(bookId)) { return res.status(400).send({ status: false, msg: "invalid bookId,Please Enter Valid bookId" }) }
 
         let data = await bookModel.find({ _id: bookId, isDeleted: false })
         if (data.length > 0) {

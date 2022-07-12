@@ -21,7 +21,6 @@ app.all('*', function (req, res) {
 })
 app.use(function (e, req, res, next) {
     if (e.message == "Bad Request") return res.status(400).send({ error: e.message });
-
 })
 
 
