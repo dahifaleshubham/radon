@@ -15,8 +15,8 @@ const authentication = function (req, res, next) {
    jwt.verify(token, "functionup-radon", (err, user) => {
       if (err)
         return res.status(401).send({ msg: "invalid token" });
-      req.user = user;
-     //  console.log(user)
+       req.user = user;
+      //  console.log(user)
 
       next();
     });

@@ -10,12 +10,12 @@ const{createReview,updatedReviewById,deleteReview}=require('../Controllers/revie
 
 router.post('/register',checkBody,validUserModel,createUser)
 router.post("/login",checkBody,loginUser)
-router.post('/books',checkBody,validBookModel,authentication,authoriseBook,createBook)
+router.post('/books',checkBody,authentication,validBookModel,authoriseBook,createBook)
 
-router.get('/books',getBooks)
+router.get('/books',authentication,getBooks)
 
-//router.get('/books/:bookId',authentication,authoriseParams,getBookById) 
-router.get('/books/:bookId',getBookById)
+router.get('/books/:bookId',authentication,authoriseParams,getBookById) 
+//router.get('/books/:bookId',getBookById)
 router.put('/books/:bookId',authentication,authoriseParams,updateBook)
 
 router.delete('/books/:bookId',authentication,authoriseParams,deleteBook)

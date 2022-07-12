@@ -26,7 +26,7 @@ const createReview = async function (req, res) {
         if (!checkbook) return res.status(404).send({ status: false, message: "No book found" })
 
         let rating1 = data.rating
-        
+
         if (!(rating1 >= 1 && rating1 <= 5)) return res.status(404).send({ status: false, message: "Enter a valid reting" })
 
         let review = data.review
@@ -89,7 +89,7 @@ const updatedReviewById = async function (req, res) {
             title: findBook.title, excerpt: findBook.excerpt, userId: findBook.userId, category: findBook.category, subcategory: findBook.subcategory,
             isDeleted: findBook.isDeleted, reviews:countReview , releasedAt: findBook.releasedAt, createdAt: findBook.createdAt, updatedAt: findBook.updatedAt, reviewData: updateReview
         }
-        res.status(201).send({ status: true, message: 'Success', data: finalResult })       
+        res.status(200).send({ status: true, message: 'Success', data: finalResult })       
     } catch (err) {
         return res.status(500).send({ status: false, message: err.message });
     }
@@ -125,7 +125,7 @@ const deleteReview = async function (req, res) {
             title: findBook.title, excerpt: findBook.excerpt, userId: findBook.userId, category: findBook.category, subcategory: findBook.subcategory,
             isDeleted: findBook.isDeleted, reviews:countReview , releasedAt: findBook.releasedAt, createdAt: findBook.createdAt, updatedAt: findBook.updatedAt, reviewData: updateReview
         }
-        res.status(201).send({ status: true, message: 'Success', data: finalResult })       
+        res.status(200).send({ status: true, message: 'Success', data: finalResult })       
 
     } catch (err) {
         return res.status(500).send({ status: false, message: err.message });

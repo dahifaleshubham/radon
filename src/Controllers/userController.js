@@ -22,7 +22,8 @@ const loginUser = async function (req, res) {
   try {
     let userName = req.body.email;
     let password = req.body.password;
-
+   userName=userName.trim()
+    password=password.trim()
     let user = await userModel.findOne({ email: userName, password: password });
     if (!user)
       return res.status(400).send({
