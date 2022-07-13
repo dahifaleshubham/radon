@@ -31,6 +31,8 @@ const createReview = async function (req, res) {
 
         let review = data.review
         review = review.trim()
+        if (!x(review)) return res.status(400).send({ status: false, message: "Enter your's review " })
+
         if (!x(rating1)) return res.status(400).send({ status: false, message: "Enter your's rating " })
 
         let newData = {
@@ -120,14 +122,8 @@ const deleteReview = async function (req, res) {
         if (!findReview) return res.status(400).send({ status: false, message: "already deleted" });
 
         const updateReview = await reviewModel.findByIdAndUpdate({ _id: reviewId, bookId: bookId }, { isDeleted: true }, { new: true });
-     //   let finelResult = await reviewModel.findOne({ _id: createReview._id }).select({ _id: 1, bookId: 1, reviewedBy: 1, reviewedAt: 1, rating: 1, review: 1 })
-        const countReview = await reviewModel.find({bookId:bookId,isDeleted:false}).count()
 
-        let finalResult = {
-            title: findBook.title, excerpt: findBook.excerpt, userId: findBook.userId, category: findBook.category, subcategory: findBook.subcategory,
-            isDeleted: findBook.isDeleted, reviews:countReview , releasedAt: findBook.releasedAt, createdAt: findBook.createdAt, updatedAt: findBook.updatedAt, reviewData: updateReview
-        }
-        res.status(200).send({ status: true, message: 'Success', data: finalResult })       
+        res.status(200).send({ status: true, message: 'Successfully Deleted'})       
 
     } catch (err) {
         return res.status(500).send({ status: false, message: err.message });
