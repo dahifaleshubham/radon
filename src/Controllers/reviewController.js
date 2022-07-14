@@ -45,6 +45,7 @@ const createReview = async function (req, res) {
         let createReview = await reviewModel.create(newData);
         let finelResult = await reviewModel.findOne({ _id: createReview._id }).select({ _id: 1, bookId: 1, reviewedBy: 1, reviewedAt: 1, rating: 1, review: 1 })
         const countReview = await reviewModel.find({bookId:bookId,isDeleted:false}).count()
+        const incriseReview = await bookModel.findByIdAndUpdate({_id:bookId},{$set:{reviews:countReview}})
 
         let finalResult = {
             title: checkbook.title, excerpt: checkbook.excerpt, userId: checkbook.userId, category: checkbook.category, subcategory: checkbook.subcategory,
@@ -120,6 +121,9 @@ const deleteReview = async function (req, res) {
 
         const findReview = await reviewModel.findOne({ _id: reviewId, bookId: bookId, isDeleted: false, }); //check id exist in review model
         if (!findReview) return res.status(404).send({ status: false, message: "already deleted" });
+   
+
+        const decriseReview = await bookModel.findByIdAndUpdate({_id:bookId},{$inc:{reviews:-1}})
 
         const updateReview = await reviewModel.findByIdAndUpdate({ _id: reviewId, bookId: bookId }, { isDeleted: true }, { new: true });
 

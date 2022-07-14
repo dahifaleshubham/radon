@@ -6,7 +6,7 @@ const { createBook,getBooks,getBookById,updateBook,deleteBook} = require('../Con
 const { createUser,loginUser} = require('../Controllers/userController')
 const { checkBody,validUserModel,validBookModel} = require("../vaildator/validations.js")
 const {authoriseBook,authentication,authoriseParams}=require("../middlware/authentication")
-const{createReview,updatedReviewById,deleteReview}=require('../Controllers/reviewController')
+const {createReview,updatedReviewById,deleteReview}=require('../Controllers/reviewController')
 
 router.post('/register',checkBody,validUserModel,createUser)
 router.post("/login",checkBody,loginUser)
