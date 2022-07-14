@@ -6,6 +6,8 @@ const mongoose = require('mongoose');
 
 
 
+// ========================================[Authentication]==============================================================
+
 const authentication = function (req, res, next) {
   try {
     res.setHeader('Access-Control-Allow-Origin', '*')
@@ -27,6 +29,8 @@ const authentication = function (req, res, next) {
   }
 }
 
+
+// ========================================[AuthoriseParams]==============================================================
 
 let authoriseParams = async function (req, res, next) {
   try {
@@ -52,6 +56,8 @@ let authoriseParams = async function (req, res, next) {
   }
 }
 
+
+// ========================================[AuthorisBook]==============================================================
 
 let authoriseBook = async function (req, res, next) {
   try {

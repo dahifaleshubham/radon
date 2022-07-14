@@ -4,7 +4,11 @@ const route = require('./route/route.js');
 const multer = require('multer')
 const  mongoose = require('mongoose');
 const app = express();
+
+
+
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(multer().any());
 
 mongoose.connect("mongodb+srv://debojit:rJuLc4nyipWKU6tV@cluster1.31noc.mongodb.net/group19Database", {
@@ -15,6 +19,9 @@ mongoose.connect("mongodb+srv://debojit:rJuLc4nyipWKU6tV@cluster1.31noc.mongodb.
 
 
 app.use('/', route);
+
+app.use(bodyParser.json());
+app.use(multer().any());
 
 app.all('*', function (req, res) {
     throw new Error("Bad Request");

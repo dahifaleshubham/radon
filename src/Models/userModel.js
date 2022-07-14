@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 
+// ========================================[User Model]==============================================================
+
 const userSchema = new mongoose.Schema(
   {
     title: {

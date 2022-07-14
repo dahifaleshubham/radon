@@ -2,6 +2,10 @@ const bookModel = require("../Models/bookModel");
 const userModel = require("../Models/userModel");
 const mongoose = require('mongoose');
 
+
+
+// ========================================[Validation]==============================================================
+
 let email1 = /^[a-zA-Z][a-zA-Z0-9\-\_\.]+@[a-zA-Z0-9]{2,}\.[a-zA-Z0-9]{2,3}$/;
 const validPassword = /^[a-zA-Z0-9'@&#.\s]{8,15}$/;
 let mobile1 = /^[0]?[6789]\d{9}$/;
@@ -13,7 +17,7 @@ let yearFormet = /^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/
 let validCity = /^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/
 
 
-
+// ========================================[CheckBody Validation]==============================================================
 
 let checkBody = async function (req, res, next) {
     try {
@@ -30,6 +34,9 @@ function x(data) {
     if (!data || data == null || data === undefined || data.trim() == 0) return false;
     return true
 }
+
+
+// ========================================[UserModel Validation]==============================================================
 
 const validUserModel = async function (req, res, next) {
     try {
@@ -90,6 +97,10 @@ const validUserModel = async function (req, res, next) {
     }
 }
 
+
+
+
+// ========================================[BookValidation]==============================================================
 
 let validBookModel = async function (req, res, next) {
     try {
