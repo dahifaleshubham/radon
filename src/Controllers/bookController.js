@@ -2,64 +2,10 @@ const bookModel = require("../Models/bookModel");
 const userModel = require("../Models/userModel");
 const mongoose = require('mongoose')
 const reviewModel=require("../models/reviewModel")
-const aws= require("aws-sdk")
+const file =  require("../controllers/aws-file.js");
 
 
 
-
-// ========================================[AWS APi]==============================================================//
-
-aws.config.update({
-    accessKeyId: "AKIAY3L35MCRVFM24Q7U",
-    secretAccessKey: "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",
-    region: "ap-south-1"
-})
-
-
-let uploadFile = async (file) => {
-   return new Promise( function (resolve, reject) {
-    // this function will upload file to aws and return the link
-    let s3= new aws.S3({apiVersion: '2006-03-01'}); // we will be using the s3 service of aws
-
-    var uploadParams= {
-        ACL: "public-read",
-        Bucket: "classroom-training-bucket",  //HERE
-        Key: "abc/" + file.originalname, //HERE 
-        Body: file.buffer
-    }
-
-
-    s3.upload( uploadParams, function (err, data) {
-        if (err) {
-            return reject({"error": err})
-        }
-        console.log(data)
-        console.log("file uploaded succesfully")
-        return resolve(data.Location)
-    })
-
-    // let data= await s3.upload( uploadParams)
-    // if( data) return data.Location
-    // else return "there is an error"
-
-   })
-}
-
-
-
-// ==> POST api : to generate bookCover URL
-
-const generateURL = async function (req, res) {
-    try {
-        let files = req.files
-        if(!files || files.length === 0) return res.status(400).send({ status: false, message: "No cover image found." })
-            //upload to s3 and get the uploaded link
-        let bookCoverURL= await uploadFile( files[0] )
-        return res.status(201).send({ status: true, message: 'Success', data: bookCoverURL })
-    } catch (err) {
-        return res.status(500).send({ status: false, message: err.message })
-    }
-}
 
 
 
@@ -70,6 +16,15 @@ const createBook = async function (req, res) {
         res.setHeader('Access-Control-Allow-Origin', '*')
         let data = req.body;
         //let { title, excerpt, userId, ISBN, category,reviews, subcategory, releasedAt,bookCover } = data;
+        
+        
+
+        const files = req.files
+        if(files && files.length>0)   { 
+            var uploadedFileURL= await file.uploadFile( files[0] ) }
+        
+        data.bookCover = uploadedFileURL
+
         let createBook = await bookModel.create(data);
         res.status(201).send({ status: true, message: 'Success', data: createBook })
 
@@ -230,4 +185,4 @@ const deleteBook = async function (req, res) {
 
 
 
-module.exports = { generateURL,createBook, getBooks, getBookById, updateBook, deleteBook ,validateString}
+module.exports = { createBook, getBooks, getBookById, updateBook, deleteBook ,validateString}

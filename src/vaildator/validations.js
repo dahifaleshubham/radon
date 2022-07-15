@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 
 
 
-// ========================================[Validation]==============================================================
+// ========================================[Validation ]==============================================================
 
 let email1 = /^[a-zA-Z][a-zA-Z0-9\-\_\.]+@[a-zA-Z0-9]{2,}\.[a-zA-Z0-9]{2,3}$/;
 const validPassword = /^[a-zA-Z0-9'@&#.\s]{8,15}$/;
@@ -42,7 +42,7 @@ const validUserModel = async function (req, res, next) {
     try {
         res.setHeader('Access-Control-Allow-Origin', '*')
         let data = req.body
-
+        
         let check = data.title
         check = check.trim()
         if (!check) { return res.status(400).send({ status: false, msg: "Please enter your Title" }) }
@@ -105,8 +105,8 @@ const validUserModel = async function (req, res, next) {
 let validBookModel = async function (req, res, next) {
     try {
         res.setHeader('Access-Control-Allow-Origin', '*')
-        let data = req.body
-
+        let data = req.body;
+     
         let title = data.title
         title = title.trim()
         if (!x(title)) { return res.status(400).send({ status: false, msg: "Please enter your Title" }) }
